@@ -1,0 +1,26 @@
+version: '3.1'
+networks:
+  bridge:
+    driver: bridge
+services:
+  build_mvn:
+    build: ./maven
+    container_name: maven_t1
+    volumes:
+      - app-data:/tmp/webapp/
+    networks:
+      - bridge
+  # The container that runs trackingkb + Tomcat
+  web:
+    build: ./tomcat
+    container_name: tomcat_t1
+    ports:
+      - "8082:8080"
+    volumes:
+      - app-data:/usr/share/apache-tomcat-9.0.68/webapps/
+    networks:
+      - bridge
+  # The container that runs the database (postgres)
+  
+volumes:
+  app-data: {}
